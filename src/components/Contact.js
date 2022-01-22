@@ -32,15 +32,27 @@ const Contact = () => {
   const [people, setPeople] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [table, setTable] = useState("");
-  const [rest, setRest] = useState("");
+  const [table, setTable] = React.useState(false);
+  const [rest, setRest] = React.useState("2");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
 
   const [loader, setLoader] = useState(false);
+
+  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
+    useNumberInput({
+      defaultValue: 1,
+      min: 1,
+      max: 12,
+    });
+
+  const inc = getIncrementButtonProps();
+  const dec = getDecrementButtonProps();
+  const input = getInputProps({ isReadOnly: true });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,16 +60,16 @@ const Contact = () => {
 
     db.collection("bookings")
       .add({
-        people: people,
-        date: date,
-        time: time,
-        table: table,
-        rest: rest,
-        name: name,
-        surname: surname,
-        email: email,
-        phone: phone,
-        message: message,
+        i0people: people,
+        i1date: startDate,
+        i2time: time,
+        i3terrace: table,
+        i4rest: rest,
+        i5name: name,
+        i6surname: surname,
+        i7email: email,
+        i8phone: phone,
+        i9message: message,
       })
       .then(() => {
         alert("Message has been submitted");
@@ -71,13 +83,13 @@ const Contact = () => {
     setPeople("");
     setDate("");
     setTime("");
-    setTable("");
     setRest("");
     setName("");
     setSurname("");
     setEmail("");
     setPhone("");
     setMessage("");
+    setStartDate("");
   };
 
   return (
@@ -91,22 +103,35 @@ const Contact = () => {
           <label>Number of people</label>
         </Center>
         <Center my={4}>
-          <HookUsage></HookUsage>
+          <HStack maxW="320px">
+            <Button {...dec} colorScheme="green">
+              -
+            </Button>
+            <Input {...input} />
+            <Button {...inc} colorScheme="green">
+              +
+            </Button>
+          </HStack>
         </Center>
 
         <Center my={4}>
           <label>Select a date</label>
         </Center>
         <Box border="1px" borderColor="gray.200">
-          <Center my={4}>
-            <PickerDate></PickerDate>
-          </Center>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            minDate={new Date()}
+          />
         </Box>
         <Center my={4}>
           <label>Time</label>
         </Center>
-        <Select placeholder="Select an hour" value={time}
-            onChange={(e) => setTime(e.target.value)}>
+        <Select
+          placeholder="Select an hour"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+        >
           <option disabled value="Dinars">
             Dinars
           </option>
@@ -154,14 +179,23 @@ const Contact = () => {
           <FormLabel htmlFor="terracePref" mb="0">
             Would you like to sit in our terrace?
           </FormLabel>
-          <Switch id="terracePref"/>
+          <Switch
+            id="terracePref"
+            onChange={() => setTable(!table)}
+            value={table}
+          />
         </Center>
 
         <Center mt={4}>
           <label>Select one of our restaurants</label>
         </Center>
         <Center mt={1}>
-          <RadioRestaurant></RadioRestaurant>
+          <RadioGroup onChange={setRest} value={rest}>
+            <Radio value="Jazz">Jazz Café</Radio>
+            <br />
+            <Radio value="Piano">Piano Bar</Radio>
+            <br />
+          </RadioGroup>
         </Center>
 
         <Center mt={6}>
@@ -221,18 +255,6 @@ const Contact = () => {
   );
 };
 
-function RadioRestaurant() {
-  const [value, setValue] = React.useState("1");
-  return (
-    <RadioGroup onChange={setValue} value={value}>
-      <Radio value="Jazz">Jazz Café</Radio>
-      <br />
-      <Radio value="Piano">Piano Bar</Radio>
-      <br />
-    </RadioGroup>
-  );
-}
-
 function ModalTC() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -262,42 +284,6 @@ function ModalTC() {
         </ModalContent>
       </Modal>
     </>
-  );
-}
-
-const PickerDate = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  return (
-    <DatePicker
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
-      minDate={new Date()}
-    />
-  );
-};
-
-function HookUsage() {
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
-    useNumberInput({
-      defaultValue: 1,
-      min: 1,
-      max: 12,
-    });
-
-  const inc = getIncrementButtonProps();
-  const dec = getDecrementButtonProps();
-  const input = getInputProps({ isReadOnly: true });
-
-  return (
-    <HStack maxW="320px">
-      <Button {...dec} colorScheme="green">
-        -
-      </Button>
-      <Input {...input} />
-      <Button {...inc} colorScheme="green">
-        +
-      </Button>
-    </HStack>
   );
 }
 
