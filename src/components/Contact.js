@@ -9,11 +9,6 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Select,
   Switch,
   FormLabel,
@@ -32,33 +27,35 @@ import {
 } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import setDate from "date-fns/setDate";
+import "./Contact.css";
 
 const Contact = () => {
-  const [people, setPeople] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [table, setTable] = useState("");
-  const [rest, setRest] = useState("");
+  //const [people, setPeople] = useState("");
+  //const [date, setDate] = useState("");
+  //const [time, setTime] = useState("");
+  //const [table, setTable] = useState("");
+  //const [rest, setRest] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
-  const [setLoader] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const handleSubmit = (e) => {
+    alert("1");
     e.preventDefault();
+    alert("2");
     setLoader(true);
-
+    alert("3");
     db.collection("bookings")
       .add({
-        people: people,
-        date: date,
-        time: time,
-        table: table,
-        rest: rest,
+        //people: people,
+        //date: date,
+        //time: time,
+        //table: table,
+        //rest: rest,
         name: name,
         surname: surname,
         email: email,
@@ -74,11 +71,11 @@ const Contact = () => {
         setLoader(false);
       });
 
-    setPeople("");
-    setDate("");
-    setTime("");
-    setTable("");
-    setRest("");
+    //setPeople("");
+    //setDate("");
+    //setTime("");
+    //setTable("");
+    //setRest("");
     setName("");
     setSurname("");
     setEmail("");
@@ -92,21 +89,23 @@ const Contact = () => {
         <Center>
           <h1>Book a table</h1>
         </Center>
-        <Center>
+
+        <Center my={4}>
           <label>Number of people</label>
         </Center>
-        <Center>
+        <Center my={4}>
           <HookUsage></HookUsage>
         </Center>
-        <Center>
+
+        <Center my={4}>
           <label>Select a date</label>
         </Center>
         <Box border="1px" borderColor="gray.200">
-          <Center>
+          <Center my={4}>
             <PickerDate></PickerDate>
           </Center>
         </Box>
-        <Center>
+        <Center my={4}>
           <label>Time</label>
         </Center>
         <Select placeholder="Select an hour">
@@ -149,78 +148,72 @@ const Contact = () => {
           <option value="22:15">22:15</option>
           <option value="22:30">22:30</option>
         </Select>
-        <Center>
+
+        <Center mt={4}>
           <label>Table preference</label>
         </Center>
-        <Center>
+        <Center mt={1}>
           <FormLabel htmlFor="terracePref" mb="0">
             Would you like to sit in our terrace?
           </FormLabel>
           <Switch id="terracePref" />
         </Center>
-        <Center>
+
+        <Center mt={4}>
           <label>Select one of our restaurants</label>
         </Center>
-        <Center>
+        <Center mt={1}>
           <RadioRestaurant></RadioRestaurant>
         </Center>
-        <Center>
-          <label>Name</label>
-        </Center>
-        <Center>
+
+        <Center mt={6}>
           <Input
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </Center>
-        <Center>
-          <label>Surname</label>
-        </Center>
-        <Center>
+
+        <Center my={4}>
           <Input
             placeholder="Surname"
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
           />
         </Center>
-        <Center>
-          <label>Email</label>
-        </Center>
-        <Center>
+
+        <Center my={4}>
           <Input
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </Center>
-        <Center>
-          <label>Mobile phone</label>
-        </Center>
-        <Center>
-          <small>Indicate your prefix</small>
-        </Center>
-        <InputGroup>
+
+        <InputGroup my={4}>
           <InputLeftAddon children="+" />
           <Input
             type="tel"
-            placeholder="phone number"
+            placeholder="Mobile phone (indicate your prefix)"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
         </InputGroup>
-        <Center>
+
+        <Center my={4}>
           <label>Message</label>
         </Center>
-        <Center>
+
+        <Center my={4}>
           <Textarea
             placeholder="Observacions"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
         </Center>
-        <BasicUsage></BasicUsage>
-        <Center>
+        <BasicUsage my={4}></BasicUsage>
+
+        <Center my={4}>
           <Button colorScheme="blue" type="submit">
             Submit
           </Button>
@@ -231,9 +224,9 @@ const Contact = () => {
 };
 
 function RadioRestaurant() {
-  const [rest, setRest] = React.useState("1");
+  const [value, setValue] = React.useState("1");
   return (
-    <RadioGroup onChange={setRest} value={rest}>
+    <RadioGroup onChange={setValue} value={value}>
       <Radio value="Jazz">Jazz Café</Radio>
       <br />
       <Radio value="Piano">Piano Bar</Radio>
