@@ -27,14 +27,13 @@ import {
 } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "./Contact.css";
 
 const Contact = () => {
-  //const [people, setPeople] = useState("");
-  //const [date, setDate] = useState("");
-  //const [time, setTime] = useState("");
-  //const [table, setTable] = useState("");
-  //const [rest, setRest] = useState("");
+  const [people, setPeople] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [table, setTable] = useState("");
+  const [rest, setRest] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -44,18 +43,16 @@ const Contact = () => {
   const [loader, setLoader] = useState(false);
 
   const handleSubmit = (e) => {
-    alert("1");
     e.preventDefault();
-    alert("2");
     setLoader(true);
-    alert("3");
+
     db.collection("bookings")
       .add({
-        //people: people,
-        //date: date,
-        //time: time,
-        //table: table,
-        //rest: rest,
+        people: people,
+        date: date,
+        time: time,
+        table: table,
+        rest: rest,
         name: name,
         surname: surname,
         email: email,
@@ -71,11 +68,11 @@ const Contact = () => {
         setLoader(false);
       });
 
-    //setPeople("");
-    //setDate("");
-    //setTime("");
-    //setTable("");
-    //setRest("");
+    setPeople("");
+    setDate("");
+    setTime("");
+    setTable("");
+    setRest("");
     setName("");
     setSurname("");
     setEmail("");
@@ -108,7 +105,8 @@ const Contact = () => {
         <Center my={4}>
           <label>Time</label>
         </Center>
-        <Select placeholder="Select an hour">
+        <Select placeholder="Select an hour" value={time}
+            onChange={(e) => setTime(e.target.value)}>
           <option disabled value="Dinars">
             Dinars
           </option>
@@ -156,7 +154,7 @@ const Contact = () => {
           <FormLabel htmlFor="terracePref" mb="0">
             Would you like to sit in our terrace?
           </FormLabel>
-          <Switch id="terracePref" />
+          <Switch id="terracePref"/>
         </Center>
 
         <Center mt={4}>
@@ -211,7 +209,7 @@ const Contact = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
         </Center>
-        <BasicUsage my={4}></BasicUsage>
+        <ModalTC my={4}></ModalTC>
 
         <Center my={4}>
           <Button colorScheme="blue" type="submit">
@@ -235,7 +233,7 @@ function RadioRestaurant() {
   );
 }
 
-function BasicUsage() {
+function ModalTC() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
